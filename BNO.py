@@ -804,11 +804,32 @@ class BNO055_I2C(BNO055):
             i2c.write_then_readinto(self.buffer, self.buffer, out_end=1, in_start=1)
         return self.buffer[1]
 
+    @property
+    def offsets_accelerometer(self) -> Tuple[int, int, int]:
+        """Calibration offsets for the accelerometer"""
+        return struct.unpack("<hhh", self._read_register(_OFFSET_ACCEL_REGISTER, 6))
+
     @offsets_accelerometer.setter
     def offsets_accelerometer(self, offsets: Tuple[int, int, int]) -> None:
         data = bytearray(6)
         struct.pack_into("<hhh", data, 0, *offsets)
         self._write_register(_OFFSET_ACCEL_REGISTER, bytes(data))
+
+    @property
+    def offsets_magnetometer(self) -> Tuple[int, int, int]:
+        """Calibration offsets for the magnetometer"""
+        return struct.unpack("<hhh", self._read_register(_OFFSET_MAGNET_REGISTER, 6))
+
+    @offsets_magnetometer.setter
+    def offsets_magnetometer(self, offsets: Tuple[int, int, int]) -> None:
+        data = bytearray(6)
+        struct.pack_into("<hhh", data, 0, *offsets)
+        self._write_register(_OFFSET_MAGNET_REGISTER, bytes(data))
+
+    @property
+    def offsets_gyroscope(self) -> Tuple[int, int, int]:
+        """Calibration offsets for the gyroscope"""
+        return struct.unpack("<hhh", self._read_register(_OFFSET_GYRO_REGISTER, 6))
 
     @offsets_gyroscope.setter
     def offsets_gyroscope(self, offsets: Tuple[int, int, int]) -> None:
@@ -816,11 +837,27 @@ class BNO055_I2C(BNO055):
         struct.pack_into("<hhh", data, 0, *offsets)
         self._write_register(_OFFSET_GYRO_REGISTER, bytes(data))
 
-    @offsets_magnetometer.setter
-    def offsets_magnetometer(self, offsets: Tuple[int, int, int]) -> None:
-        data = bytearray(6)
-        struct.pack_into("<hhh", data, 0, *offsets)
-        self._write_register(_OFFSET_MAGNET_REGISTER, bytes(data))
+    @property
+    def radius_accelerometer(self) -> int:
+        """Radius for accelerometer (cm?)"""
+        return struct.unpack("<h", self._read_register(_RADIUS_ACCEL_REGISTER, 2))[0]
+
+    @radius_accelerometer.setter
+    def radius_accelerometer(self, radius: int) -> None:
+        data = bytearray(2)
+        struct.pack_into("<h", data, 0, radius)
+        self._write_register(_RADIUS_ACCEL_REGISTER, bytes(data))
+
+    @property
+    def radius_magnetometer(self) -> int:
+        """Radius for magnetometer (cm?)"""
+        return struct.unpack("<h", self._read_register(_RADIUS_MAGNET_REGISTER, 2))[0]
+
+    @radius_magnetometer.setter
+    def radius_magnetometer(self, radius: int) -> None:
+        data = bytearray(2)
+        struct.pack_into("<h", data, 0, radius)
+        self._write_register(_RADIUS_MAGNET_REGISTER, bytes(data))
 
 
 class BNO055_UART(BNO055):
@@ -913,7 +950,11 @@ class BNO055_UART(BNO055):
         """Calibration offsets for the accelerometer"""
         return struct.unpack("<hhh", self._read_register(_OFFSET_ACCEL_REGISTER, 6))
 
-
+    @offsets_accelerometer.setter
+    def offsets_accelerometer(self, offsets: Tuple[int, int, int]) -> None:
+        data = bytearray(6)
+        struct.pack_into("<hhh", data, 0, *offsets)
+        self._write_register(_OFFSET_ACCEL_REGISTER, bytes(data))
 
     @property
     def offsets_magnetometer(self) -> Tuple[int, int, int]:

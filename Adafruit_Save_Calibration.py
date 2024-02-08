@@ -41,29 +41,31 @@ while True:
     print("Current Settings: \n", sensor.offsets_accelerometer, sensor.offsets_gyroscope, sensor.offsets_magnetometer)
 
     acc = enter_parameters(acc, acc_not_set, "acceleration")
-    gyro = enter_parameters(gyro, gyro_not_set, "gyroscope")
-    mag = enter_parameters(mag, mag_not_set, "magnetometer")
+    # gyro = enter_parameters(gyro, gyro_not_set, "gyroscope")
+    # mag = enter_parameters(mag, mag_not_set, "magnetometer")
 
     print("Saving accelerometer values...")
-    sensor.offsets_accelerometer(acc)
+    sensor.offsets_accelerometer = acc
+
+
     if sensor.offsets_accelerometer == acc:
         print("Accelerometer offset updated")
     else:
         print("Failed")
 
-    print("Saving gyroscope values...")
-    sensor.offsets_gyroscope = gyro
-    if sensor.offsets_gyroscope == gyro:
-        print("Gyroscope offset updated")
-    else:
-        print("Failed")
-
-    print("Saving magnetometer values...")
-    sensor.offsets_magnetometer = mag
-    if sensor.offsets_magnetometer == mag:
-        print("Magnetometer offset updated")
-    else:
-        print("Failed")
+    # print("Saving gyroscope values...")
+    # sensor.offsets_gyroscope = gyro
+    # if sensor.offsets_gyroscope == gyro:
+    #     print("Gyroscope offset updated")
+    # else:
+    #     print("Failed")
+    #
+    # print("Saving magnetometer values...")
+    # sensor.offsets_magnetometer = mag
+    # if sensor.offsets_magnetometer == mag:
+    #     print("Magnetometer offset updated")
+    # else:
+    #     print("Failed")
 
     break
 
