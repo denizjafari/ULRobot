@@ -1,19 +1,20 @@
 import csv
 import numpy as np
 import board
-import BNO
-#import adafruit_bno055
+import busio
+import adafruit_bno055
 
 
-i2c = board.I2C()  # uses board.SCL and board.SDA
+# i2c = board.I2C()  # uses board.SCL and board.SDA
 # i2c = board.STEMMA_I2C()  # For using the built-in STEMMA QT connector on a microcontroller
-sensor = BNO.BNO055_I2C(i2c)
-#sensor = adafruit_bno055.BNO055_I2C(i2c)
-# If you are going to use UART uncomment these lines
-# uart = board.UART()
-# sensor = adafruit_bno055.BNO055_UART(uart)
-last_val = 0xFFFF
+# sensor = adafruit_bno055.BNO055_I2C(i2c)
 
+# If you are going to use UART uncomment these lines
+
+# uart = board.UART()
+uart = busio.UART(board.TX, board.RX, baudrate=9600, timeout=0)
+sensor = adafruit_bno055.BNO055_UART(uart)
+last_val = 0xFFFF
 
 acc = [0, 0, 0]
 gyro = mag = acc
@@ -36,7 +37,6 @@ def enter_parameters(set, status, label):
             pass
 
 
-
 while True:
     print("Current Settings: \n", sensor.offsets_accelerometer, sensor.offsets_gyroscope, sensor.offsets_magnetometer)
 
@@ -45,8 +45,6 @@ while True:
     # mag = enter_parameters(mag, mag_not_set, "magnetometer")
 
     print("Saving accelerometer values...")
-    sensor.offsets_accelerometer = acc
-
 
     if sensor.offsets_accelerometer == acc:
         print("Accelerometer offset updated")
@@ -54,19 +52,17 @@ while True:
         print("Failed")
 
     # print("Saving gyroscope values...")
-    # sensor.offsets_gyroscope = gyro
+
     # if sensor.offsets_gyroscope == gyro:
     #     print("Gyroscope offset updated")
     # else:
     #     print("Failed")
     #
     # print("Saving magnetometer values...")
-    # sensor.offsets_magnetometer = mag
+
     # if sensor.offsets_magnetometer == mag:
     #     print("Magnetometer offset updated")
     # else:
     #     print("Failed")
 
     break
-
-
