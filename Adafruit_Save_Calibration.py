@@ -1,12 +1,14 @@
 import csv
 import numpy as np
 import board
-import adafruit_bno055
+import BNO
+#import adafruit_bno055
 
 
 i2c = board.I2C()  # uses board.SCL and board.SDA
 # i2c = board.STEMMA_I2C()  # For using the built-in STEMMA QT connector on a microcontroller
-sensor = adafruit_bno055.BNO055_I2C(i2c)
+sensor = BNO.BNO055_I2C(i2c)
+#sensor = adafruit_bno055.BNO055_I2C(i2c)
 # If you are going to use UART uncomment these lines
 # uart = board.UART()
 # sensor = adafruit_bno055.BNO055_UART(uart)
@@ -43,7 +45,7 @@ while True:
     mag = enter_parameters(mag, mag_not_set, "magnetometer")
 
     print("Saving accelerometer values...")
-    sensor.offsets_accelerometer = acc
+    sensor.offsets_accelerometer(acc)
     if sensor.offsets_accelerometer == acc:
         print("Accelerometer offset updated")
     else:
