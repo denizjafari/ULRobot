@@ -127,6 +127,6 @@ start = time.time()     # Save start time of signal reading
 
 while True:
     check_time()
-    printdata(1000) # Print data at an interval of the given integer (milliseconds)
+    printdata(2000) # Print data at an interval of the given integer (milliseconds)
 
 
