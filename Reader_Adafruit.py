@@ -40,18 +40,20 @@ def get_data():       # Collect  data from BNO055 module
     data[3], data[4], data[5] = sensor.acceleration
     data[13], data[14], data[15] = sensor.euler
     return data
-def printdata():
-
-    print("Sensor Temperature: {} degrees C".format(sensor.temperature))
-    print("Raspberry Pi Temperature: {} degrees C".format(temperature()))
-    print("Accelerometer (m/s^2): {}".format(sensor.acceleration))
-    print("Magnetometer (microteslas): {}".format(sensor.magnetic))
-    print("Gyroscope (rad/sec): {}".format(sensor.gyro))
-    print("Euler angle: {}".format(sensor.euler))
-    print("Quaternion: {}".format(sensor.quaternion))
-    print("Linear acceleration (m/s^2): {}".format(sensor.linear_acceleration))
-    print("Gravity (m/s^2): {}".format(sensor.gravity))
-    print()
+def printdata(time_between_prints):
+    global prev_millis
+    time_millis = 1000 * (time.time() - start)
+    if time_millis >= time_between_prints + prev_millis:
+        print("Sensor Temperature: {} degrees C".format(sensor.temperature))
+        print("Raspberry Pi Temperature: {} degrees C".format(temperature()))
+        print("Accelerometer (m/s^2): {}".format(sensor.acceleration))
+        print("Magnetometer (microteslas): {}".format(sensor.magnetic))
+        print("Gyroscope (rad/sec): {}".format(sensor.gyro))
+        print("Euler angle: {}".format(sensor.euler))
+        print("Quaternion: {}".format(sensor.quaternion))
+        print("Linear acceleration (m/s^2): {}".format(sensor.linear_acceleration))
+        print("Gravity (m/s^2): {}".format(sensor.gravity))
+        print()
 
 def check_time():    # Check the time since last write to CSV and write new data if desired time has passed
     global prev_millis
@@ -125,6 +127,6 @@ start = time.time()     # Save start time of signal reading
 
 while True:
     check_time()
-    printdata()
+    printdata(1000) # Print data at an interval of the given integer (milliseconds)
 
 
