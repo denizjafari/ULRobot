@@ -10,7 +10,7 @@ import time
 import board
 import adafruit_bno055
 
-prev_millis = 0   # Initialise variable for counting
+prev_millis = [0., 0.]  # Initialise variable for counting time
 sampling = 20  # Desired sampling frequency (for recording to CSV)
 
 
@@ -43,7 +43,7 @@ def get_data():       # Collect  data from BNO055 module
 def printdata(time_between_prints):
     global prev_millis
     time_millis = 1000 * (time.time() - start)
-    if time_millis >= time_between_prints + prev_millis:
+    if time_millis >= time_between_prints + prev_millis[1]:
         print("Sensor Temperature: {} degrees C".format(sensor.temperature))
         print("Raspberry Pi Temperature: {} degrees C".format(temperature()))
         print("Accelerometer (m/s^2): {}".format(sensor.acceleration))
@@ -54,12 +54,13 @@ def printdata(time_between_prints):
         print("Linear acceleration (m/s^2): {}".format(sensor.linear_acceleration))
         print("Gravity (m/s^2): {}".format(sensor.gravity))
         print()
+        prev_millis[1] = time_millis
 
 def check_time():    # Check the time since last write to CSV and write new data if desired time has passed
     global prev_millis
     time_millis = 1000 * (time.time() - start)
-    if time_millis >= (1000 / sampling) + prev_millis:
-        prev_millis = time_millis
+    if time_millis >= (1000 / sampling) + prev_millis[0]:
+        prev_millis[0] = time_millis
         write_to_csv()
 
 
