@@ -803,7 +803,6 @@ class BNO055_I2C(BNO055):
         with self.i2c_device as i2c:
             i2c.write_then_readinto(self.buffer, self.buffer, out_end=1, in_start=1)
         return self.buffer[1]
-
     @property
     def offsets_accelerometer(self) -> Tuple[int, int, int]:
         """Calibration offsets for the accelerometer"""
