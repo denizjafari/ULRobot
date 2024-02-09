@@ -858,6 +858,24 @@ class BNO055_I2C(BNO055):
         struct.pack_into("<h", data, 0, radius)
         self._write_register(_RADIUS_MAGNET_REGISTER, bytes(data))
 
+    @offsets_accelerometer.setter
+    def offsets_accelerometer(self, offsets: Tuple[int, int, int]) -> None:
+        data = bytearray(6)
+        struct.pack_into("<hhh", data, 0, *offsets)
+        self._write_register(_OFFSET_ACCEL_REGISTER, bytes(data))
+
+    @offsets_magnetometer.setter
+    def offsets_magnetometer(self, offsets: Tuple[int, int, int]) -> None:
+        data = bytearray(6)
+        struct.pack_into("<hhh", data, 0, *offsets)
+        self._write_register(_OFFSET_MAGNET_REGISTER, bytes(data))
+
+    @offsets_gyroscope.setter
+    def offsets_gyroscope(self, offsets: Tuple[int, int, int]) -> None:
+        data = bytearray(6)
+        struct.pack_into("<hhh", data, 0, *offsets)
+        self._write_register(_OFFSET_GYRO_REGISTER, bytes(data))
+
 
 class BNO055_UART(BNO055):
     """

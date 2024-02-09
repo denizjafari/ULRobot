@@ -2,18 +2,22 @@ import csv
 import numpy as np
 import board
 import busio
-import adafruit_bno055
+#import adafruit_bno055
+import BNO
 
+# Currently using the BNO modified library!!!!
 
-# i2c = board.I2C()  # uses board.SCL and board.SDA
+i2c = board.I2C()  # uses board.SCL and board.SDA
 # i2c = board.STEMMA_I2C()  # For using the built-in STEMMA QT connector on a microcontroller
 # sensor = adafruit_bno055.BNO055_I2C(i2c)
+sensor = BNO.BNO055_I2C(i2c)
 
 # If you are going to use UART uncomment these lines
 
 # uart = board.UART()
-uart = busio.UART(board.TX, board.RX, baudrate=9600, timeout=0)
-sensor = adafruit_bno055.BNO055_UART(uart)
+# uart = busio.UART(board.TX, board.RX, baudrate=9600, timeout=0)
+# sensor = adafruit_bno055.BNO055_UART(uart)
+
 last_val = 0xFFFF
 
 acc = [0, 0, 0]
